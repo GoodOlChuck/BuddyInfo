@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 public class AddressBook {
 	private ArrayList<BuddyInfo> addressbook;
@@ -42,6 +44,25 @@ public class AddressBook {
 	
 	public int size(){
 		return addressbook.size();
+	}
+	
+	public void export(ArrayList<AddressBook> alist){
+		
+		//if(size() == 0)
+			//abook=alist.get(alist.size()-1);
+		
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(getName()+".txt");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		out.println(alist.get(size()-1).toString());
+		out.close();
+		//setText("Address Book Saved");
+		
+	
 	}
 	
 }

@@ -119,7 +119,7 @@ public class AddressFrame extends JFrame implements ActionListener {
 		saveList.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(abook.size() == 0)
+				/*if(abook.size() == 0)
 				abook=alist.get(alist.size()-1);
 				PrintWriter out = null;
 				try {
@@ -130,7 +130,10 @@ public class AddressFrame extends JFrame implements ActionListener {
 				}
 				out.println(alist.get(abook.size()-1).toString());
 				out.close();
-				text.setText("Address Book Saved");
+				text.setText("Address Book Saved");*/
+				
+				abook.export(alist);
+				
 			}
 		});
 		
