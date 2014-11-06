@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 
 public class BuddyInfo {
 	
@@ -137,10 +139,29 @@ public class BuddyInfo {
 	
 	public String toString(){
 		String info="";
-		info= "Name: "+getName()+ " | "+"Address: "+getAddress()+" | " +"Phone Number: "+getPhonenumber();
+		info= getName()+ ","+getAddress()+ ","+getPhonenumber();
 		return info;
 	}
 	
+	public static BuddyInfo importBuddy(String bname){
+		String name,address,phone;
+		//String copy = bname;
+		
+		Scanner s = new Scanner(bname).useDelimiter(",");
+
+		name=s.next();
+		System.out.println(name);
+		address=s.next();
+		System.out.println(address);
+		phone=s.next();
+		System.out.println(phone);
+		
+		s.close();
+		
+		BuddyInfo newBuddy = new BuddyInfo(name,address,phone);
+		
+		return newBuddy;
+	}
 }
 
 

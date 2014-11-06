@@ -2,11 +2,19 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -20,12 +28,13 @@ import javax.swing.DefaultListModel;
 
 public class AddressFrame extends JFrame implements ActionListener {
 	
+	private final static Charset ENCODING = StandardCharsets.UTF_8;  
 	static AddressBook abook = new AddressBook("Address Book");
 	static AddressFrame a;
 	static JLabel text;
 	static JMenuBar menuBar;
 	static JMenu buddyBar, bookBar, fileBar;
-	static JMenuItem addBuddy,saveList, newList, removeBuddy, editBuddy;
+	static JMenuItem addBuddy,saveList, newList, removeBuddy, editBuddy, importBook;
 	static JList<BuddyInfo> list;
 	static DefaultListModel<BuddyInfo> model;
 	
@@ -65,6 +74,10 @@ public class AddressFrame extends JFrame implements ActionListener {
 		buddyBar = new JMenu("Buddy Options");
 		buddyBar.getAccessibleContext().setAccessibleDescription("Buddy Operations");
 		menuBar.add(buddyBar);
+		
+		importBook = new JMenuItem("Import Address Book");
+		importBook.getAccessibleContext().setAccessibleDescription("Imports an Address Book from a txt file");
+		fileBar.add(importBook);
 
 		addBuddy = new JMenuItem("Add Buddy");
 		addBuddy.getAccessibleContext().setAccessibleDescription("Adds a Buddy to the list");
@@ -114,6 +127,11 @@ public class AddressFrame extends JFrame implements ActionListener {
 				abook.addBuddy(buddy);
 				model.addElement(buddy);
 				text.setText("Buddy Added");
+				
+				/*String t = "Jim,123 Maple,612353467";
+				buddy=buddy.importBuddy(t);
+				abook.addBuddy(buddy);
+				model.addElement(buddy);*/
 			}
 		});
 		saveList.addActionListener(new ActionListener(){
@@ -164,6 +182,21 @@ public class AddressFrame extends JFrame implements ActionListener {
 					
 					abook.editBuddy(list.getSelectedValue(), s1, s2, s3);
 					text.setText("Edit a buddy");
+				}
+			}
+		});
+		
+		importBook.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				//Handle open button action.
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				int result = fileChooser.showOpenDialog(a);
+				if (result == JFileChooser.APPROVE_OPTION) {
+				    File selectedFile = fileChooser.getSelectedFile();
+				    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+				    
+
 				}
 			}
 		});
