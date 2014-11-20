@@ -16,6 +16,7 @@ import org.junit.Test;
  */
 public class AddressBookTest {
 	AddressBook add;
+	ArrayList<AddressBook> alist;
 	BuddyInfo b1,b2,b3;
 	
 	/**
@@ -37,6 +38,16 @@ public class AddressBookTest {
 		
 	}
 
+	/**
+	 * Test method for {@link AddressBook#clear()}.
+	 */
+	@Test
+	public void test() {
+		alist.add(add);
+		add.export(alist);
+		assertEquals(0,add.size());
+	}
+	
 	/**
 	 * Test method for {@link AddressBook#clear()}.
 	 */

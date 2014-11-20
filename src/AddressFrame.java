@@ -189,15 +189,8 @@ public class AddressFrame extends JFrame implements ActionListener {
 		importBook.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				//Handle open button action.
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				int result = fileChooser.showOpenDialog(a);
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-				    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-				    
-
-				}
+				String s1 = (String) JOptionPane.showInputDialog("Please Enter Filename Of the Address Book: ");
+				alist.add(abook.importBook(s1 + ".txt"));
 			}
 		});
 		

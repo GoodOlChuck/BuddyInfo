@@ -1,6 +1,15 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 public class AddressBook {
 	private ArrayList<BuddyInfo> addressbook;
 	String name;
@@ -44,6 +53,43 @@ public class AddressBook {
 	
 	public int size(){
 		return addressbook.size();
+	}
+	
+	public AddressBook importBook(String filename){
+		AddressBook book;
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new FileReader(filename));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        String str = null;
+
+        List<String> list = new ArrayList<String>();
+        try {
+			while((str = in.readLine()) != null){
+			    list.add(str);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        String[] stringArr = list.toArray(new String[0]);
+	    //newBook = new AddressBook(stringArr[0]);
+        ArrayList<BuddyInfo> newBook = new ArrayList<BuddyInfo>();
+        book = new AddressBook(stringArr[0]);
+	    //String[] test;
+	    BuddyInfo b1 =null;
+	    for(int x=1; x<stringArr.length; x++){
+	    	String[] test = stringArr[x].trim().split("\\s*,\\s*");
+	    	b1 = new BuddyInfo(test[0],"","");
+	    	book.addBuddy(b1);
+	    	newBook.add(b1);
+	    }
+	    addressbook = newBook;
+	    return book;
 	}
 	
 	public void export(ArrayList<AddressBook> alist){
