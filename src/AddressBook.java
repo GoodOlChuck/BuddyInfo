@@ -7,10 +7,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-public class AddressBook {
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+public class AddressBook implements Serializable{
 	private ArrayList<BuddyInfo> addressbook;
 	String name;
 
@@ -135,4 +151,79 @@ public class AddressBook {
 		
 	}
 	
+	public String toXML(){
+		String xml = "";
+		
+		xml += "<AddressBook>\n" + "<aname>" + getName() + "</aname>\n";
+		for(BuddyInfo buddy: addressbook){
+			xml += "<BuddyInfo>\n";
+			
+			xml+= "<name>" + buddy.getName() + "</name>\n";
+			xml+= "<address>" + buddy.getAddress() + "</address>\n";
+			xml+= "<phonenumber>" + buddy.getPhonenumber() + "</phonenumber>\n";
+					
+			xml += "</BuddyInfo>\n";
+		}
+		xml += "</AddressBook>";
+		return xml;
+	}
+	
+	public void exportToXmlFile(String name){
+		PrintWriter writer = null;
+		String xml = toXML();
+		try {
+			writer = new PrintWriter(name + ".xml", "UTF-8");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		writer.println(xml);
+		writer.close();
+	}
+	
+	public void importFromXmlFileSAX(AddressBook abook, File f){
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder d = null;
+		abook.clear();
+		
+		try {
+			d = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Document doc = null;
+		try {
+			doc = d.parse(f);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//System.out.println("Root: " + doc.getDocumentElement().getNodeName());
+		NodeList lst = doc.getDocumentElement().getChildNodes();
+		for(int ii=0; ii<lst.getLength();ii++){
+			Node n = lst.item(ii);
+			System.out.println("Child: " + n.getNodeName() + " ==> " + n.getTextContent());
+			if(n.getNodeName().equals("BuddyInfo")){
+				BufferedReader reader = new BufferedReader(new StringReader(n.getTextContent()));
+				//reader.readLine();
+				try {
+					reader.readLine();
+					BuddyInfo newBuddy = new BuddyInfo(reader.readLine(),reader.readLine(),reader.readLine());
+					abook.addBuddy(newBuddy);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}
 }

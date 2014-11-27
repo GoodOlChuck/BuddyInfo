@@ -61,6 +61,27 @@ public class AddressFrame extends JFrame implements ActionListener {
 		currentPos = alist.size() -1;
 		//System.out.println(buddy.getInfo());
 		
+		
+		File f = new File("file.xml");
+		xmlParser test = new xmlParser();
+		System.out.println("------START SAX-------");
+		try {
+			test.readSAX(f);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("------END SAX-------");
+		
+		System.out.println("------START DOM-------");
+		try {
+			test.readDOM(f);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("------END DOM-------");
+		
 		//Create the menu bar.
 		menuBar = new JMenuBar();
 
@@ -155,6 +176,14 @@ public class AddressFrame extends JFrame implements ActionListener {
 				int currentPos = alist.size() -1;
 				//abook.export(alist);
 				abook.export(alist,abook,currentPos);
+				abook.exportToXmlFile(abook.getName());
+				File f = new File("test2.xml");
+				
+				abook.importFromXmlFileSAX(abook, f);
+				model.clear();
+				for(int i=0; i<abook.size(); i++){
+					model.addElement(abook.getBuddy(i));
+				}
 			}
 		});
 		
