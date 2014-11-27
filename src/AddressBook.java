@@ -51,6 +51,10 @@ public class AddressBook {
 		return b;
 	}
 	
+	public BuddyInfo getBuddy(int index){
+		return addressbook.get(index);
+	}
+	
 	public int size(){
 		return addressbook.size();
 	}
@@ -80,11 +84,17 @@ public class AddressBook {
 	    //newBook = new AddressBook(stringArr[0]);
         ArrayList<BuddyInfo> newBook = new ArrayList<BuddyInfo>();
         book = new AddressBook(stringArr[0]);
-	    //String[] test;
-	    BuddyInfo b1 =null;
-	    for(int x=1; x<stringArr.length; x++){
-	    	String[] test = stringArr[x].trim().split("\\s*,\\s*");
-	    	b1 = new BuddyInfo(test[0],"","");
+	    String[] test;
+	    //BuddyInfo b1 =null;
+	    for(int x=1; x<stringArr.length -1; x++){
+	    	String temp = stringArr[x];
+	    	List<String> items = Arrays.asList(temp.split(","));
+	    	System.out.println(stringArr[1]);
+	    	//test = temp.split("\\s*,\\s*");
+	    	System.out.println(items.get(0));
+	    	System.out.println(items.get(1));
+	    	//b1 = new BuddyInfo(test[0],test[1],test[2]);
+	    	BuddyInfo b1 = new BuddyInfo(items.get(0), items.get(1), items.get(2));
 	    	book.addBuddy(b1);
 	    	newBook.add(b1);
 	    }
@@ -104,11 +114,25 @@ public class AddressBook {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		out.println(alist.get(size()-1).toString());
+		out.println(alist.get(size()-3).toString());
 		out.close();
 		//setText("Address Book Saved");
 		
 	
+	}
+	
+	public void export(ArrayList<AddressBook> alist, AddressBook abook, int currentPos){
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(alist.get(currentPos).getName()+".txt");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		out.println(abook.toString());
+		out.close();
+		//setText("Address Book Saved");
+		
 	}
 	
 }

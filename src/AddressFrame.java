@@ -56,7 +56,9 @@ public class AddressFrame extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		final ArrayList<AddressBook> alist= new ArrayList<AddressBook>();
+		int currentPos;
 		alist.add(abook);
+		currentPos = alist.size() -1;
 		//System.out.println(buddy.getInfo());
 		
 		//Create the menu bar.
@@ -150,8 +152,9 @@ public class AddressFrame extends JFrame implements ActionListener {
 				out.close();
 				text.setText("Address Book Saved");*/
 				
-				abook.export(alist);
-				
+				int currentPos = alist.size() -1;
+				//abook.export(alist);
+				abook.export(alist,abook,currentPos);
 			}
 		});
 		
@@ -191,6 +194,12 @@ public class AddressFrame extends JFrame implements ActionListener {
 				//Handle open button action.
 				String s1 = (String) JOptionPane.showInputDialog("Please Enter Filename Of the Address Book: ");
 				alist.add(abook.importBook(s1 + ".txt"));
+				
+				for(int i=0; i<abook.size(); i++){
+					model.addElement(abook.getBuddy(i));
+				}
+					
+				a.repaint();
 			}
 		});
 		
